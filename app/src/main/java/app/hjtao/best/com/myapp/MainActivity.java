@@ -15,19 +15,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private LinearLayout TabContacts;
     private LinearLayout TabFind;
     private LinearLayout TabMe;
-
     //声明四个Tab的ImageButton
     private ImageButton BtnWeixinImg;
     private ImageButton BtnContactsImg;
     private ImageButton BtnFindImg;
     private ImageButton BtnMeImg;
-
     //声明四个Tab分别对应的Fragment
     private Fragment FragWeixin;
     private Fragment FragContacts;
     private Fragment FragFind;
     private Fragment FragMe;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,23 +34,21 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         initEvents();//初始化事件
         selectTab(0);//默认选中第一个Tab
     }
-
     private void initEvents() {
         TabWeixin.setOnClickListener(this);
         TabContacts.setOnClickListener(this);
         TabFind.setOnClickListener(this);
         TabMe.setOnClickListener(this);
     }
-
     private void initViews() {
         TabWeixin=(LinearLayout) findViewById(R.id.id_tab_weixin);
-        TabFind=(LinearLayout) findViewById(R.id.id_tab_find);
         TabContacts=(LinearLayout) findViewById(R.id.id_tab_contacts);
+        TabFind=(LinearLayout) findViewById(R.id.id_tab_find);
         TabMe=(LinearLayout) findViewById(R.id.id_tab_me);
 
         //初始化四个ImageButton
         BtnWeixinImg = (ImageButton) findViewById(R.id.id_tab_weixin_img);
-        BtnContactsImg = (ImageButton) findViewById(R.id.id_tab_ontacts_img);
+        BtnContactsImg = (ImageButton) findViewById(R.id.id_tab_contacts_img);
         BtnFindImg = (ImageButton) findViewById(R.id.id_tab_find_img);
         BtnMeImg = (ImageButton) findViewById(R.id.id_tab_me_img);
     }
@@ -76,7 +71,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         }
     }
-
     //进行选中Tab的处理
     private void selectTab(int i) {
         //获取FragmentManager对象
@@ -130,7 +124,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         //不要忘记提交事务
         transaction.commit();
     }
-
     //将四个的Fragment隐藏
     private void hideFragments(FragmentTransaction transaction) {
         if (FragWeixin != null) {
@@ -146,9 +139,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             transaction.hide(FragMe);
         }
     }
-
-
-
     //将四个ImageButton置为灰色
     private void resetImgs() {
         BtnWeixinImg.setImageResource(R.drawable.tab_weixin_normal);
@@ -156,7 +146,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         BtnFindImg.setImageResource(R.drawable.tab_find_normal);
         BtnMeImg.setImageResource(R.drawable.tab_me_normal);
     }
-
     }
 
 

@@ -14,5 +14,5 @@ android:layout_weight="1">
 
 </FrameLayout>
 
-<include layout="@layout/tab_button"/>
-    </LinearLayout>
+    <include layout="@layout/tab_button"/>
+</LinearLayout>

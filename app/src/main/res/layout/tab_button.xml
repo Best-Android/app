@@ -21,11 +21,14 @@
             android:layout_height="wrap_content"
             android:src="@drawable/tab_weixin_normal"
             android:background="#00000000"/>
-        <TextView
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="微信"/>
+            android:text="微信"
+            android:textColor="@color/text_color_green"
+
+
+            />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/id_tab_contacts"
@@ -36,16 +39,16 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/id_tab_ontacts_img"
+            android:id="@+id/id_tab_contacts_img"
             android:clickable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/tab_contacts_normal"
             android:background="#00000000"/>
-        <TextView
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_color_green"
             android:text="通讯录"/>
     </LinearLayout>
     <LinearLayout
@@ -63,10 +66,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/tab_find_normal"
             android:background="#00000000"/>
-        <TextView
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_color_green"
             android:text="发现"/>
     </LinearLayout>
     <LinearLayout
@@ -85,10 +88,10 @@
             android:src="@drawable/tab_me_normal"
             android:background="#00000000"/>
 
-        <TextView
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_color_green"
             android:text="我"/>
     </LinearLayout>
 
