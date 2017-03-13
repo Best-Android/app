@@ -124,7 +124,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relativeLayout4"
+        android:id="@+id/rel_bq"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
@@ -208,7 +208,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/relativeLayout5"
+        android:id="@+id/rel_sz"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:clickable="true"
@@ -250,7 +250,7 @@
         android:layout_height="50dp"
         android:clickable="true"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/relativeLayout5"
+        android:layout_below="@+id/rel_sz"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <ImageView
@@ -287,7 +287,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:clickable="true"
-        android:layout_below="@+id/relativeLayout4"
+        android:layout_below="@+id/rel_bq"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="15dp">

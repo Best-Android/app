@@ -19,7 +19,7 @@
             android:clickable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tabweixinnormal"
+            android:src="@drawable/tab_weixin_normal"
             android:background="#00000000"/>
         <TextView
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
             android:clickable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tabcontactsnormal"
+            android:src="@drawable/tab_contacts_normal"
             android:background="#00000000"/>
         <TextView
             android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
             android:clickable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tabfindnormal"
+            android:src="@drawable/tab_find_normal"
             android:background="#00000000"/>
         <TextView
             android:layout_width="wrap_content"
@@ -82,8 +82,9 @@
             android:clickable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tabmenormal"
+            android:src="@drawable/tab_me_normal"
             android:background="#00000000"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
