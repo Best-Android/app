@@ -89,7 +89,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             //当选中点击的是微信的Tab时
             case 0:
                 //设置微信的ImageButton为绿色
-                BtnWeixinImg.setImageResource(R.drawable.tabweixinpressed);
+                BtnWeixinImg.setImageResource(R.drawable.tab_weixin_pressed);
                 //如果微信对应的Fragment没有实例化，则进行实例化，并显示出来
                 if (FragWeixin == null) {
                     FragWeixin = new WeixinFragment();
@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 }
                 break;
             case 1:
-                BtnContactsImg.setImageResource(R.drawable.tabcontactspressed);
+                BtnContactsImg.setImageResource(R.drawable.tab_contacts_pressed);
                 if (FragContacts == null) {
                     FragContacts = new ContactsFragment();
                     transaction.add(R.id.id_content, FragContacts);
@@ -109,7 +109,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 }
                 break;
             case 2:
-                BtnFindImg.setImageResource(R.drawable.tabfindpressed);
+                BtnFindImg.setImageResource(R.drawable.tab_find_pressed);
                 if (FragFind == null) {
                     FragFind = new FindFragment();
                     transaction.add(R.id.id_content, FragFind);
@@ -118,7 +118,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 }
                 break;
             case 3:
-                BtnMeImg.setImageResource(R.drawable.tabmepressed);
+                BtnMeImg.setImageResource(R.drawable.tab_me_pressed);
                 if (FragMe == null) {
                     FragMe = new MeFragment();
                     transaction.add(R.id.id_content, FragMe);
@@ -151,10 +151,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     //将四个ImageButton置为灰色
     private void resetImgs() {
-        BtnWeixinImg.setImageResource(R.drawable.tabweixinnormal);
-        BtnContactsImg.setImageResource(R.drawable.tabcontactsnormal);
-        BtnFindImg.setImageResource(R.drawable.tabfindnormal);
-        BtnMeImg.setImageResource(R.drawable.tabmenormal);
+        BtnWeixinImg.setImageResource(R.drawable.tab_weixin_normal);
+        BtnContactsImg.setImageResource(R.drawable.tab_contacts_normal);
+        BtnFindImg.setImageResource(R.drawable.tab_find_normal);
+        BtnMeImg.setImageResource(R.drawable.tab_me_normal);
     }
 
     }
