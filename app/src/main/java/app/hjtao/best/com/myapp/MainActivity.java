@@ -5,146 +5,110 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
-    //声明四个Tab的布局文件
-    private LinearLayout TabWeixin;
-    private LinearLayout TabContacts;
-    private LinearLayout TabFind;
-    private LinearLayout TabMe;
-    //声明四个Tab的ImageButton
-    private ImageButton BtnWeixinImg;
-    private ImageButton BtnContactsImg;
-    private ImageButton BtnFindImg;
-    private ImageButton BtnMeImg;
-    //声明四个Tab分别对应的Fragment
-    private Fragment FragWeixin;
-    private Fragment FragContacts;
-    private Fragment FragFind;
-    private Fragment FragMe;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends FragmentActivity {
+    private ViewPager viewPager;
+    private RadioGroup radioGroup;
+    private RadioButton rbChat, rbContacts, rbDiscovery, rbMe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(getWindow().FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        initViews();//初始化控件
-        initEvents();//初始化事件
-        selectTab(0);//默认选中第一个Tab
-    }
-    private void initEvents() {
-        TabWeixin.setOnClickListener(this);
-        TabContacts.setOnClickListener(this);
-        TabFind.setOnClickListener(this);
-        TabMe.setOnClickListener(this);
-    }
-    private void initViews() {
-        TabWeixin=(LinearLayout) findViewById(R.id.id_tab_weixin);
-        TabContacts=(LinearLayout) findViewById(R.id.id_tab_contacts);
-        TabFind=(LinearLayout) findViewById(R.id.id_tab_find);
-        TabMe=(LinearLayout) findViewById(R.id.id_tab_me);
 
-        //初始化四个ImageButton
-        BtnWeixinImg = (ImageButton) findViewById(R.id.id_tab_weixin_img);
-        BtnContactsImg = (ImageButton) findViewById(R.id.id_tab_contacts_img);
-        BtnFindImg = (ImageButton) findViewById(R.id.id_tab_find_img);
-        BtnMeImg = (ImageButton) findViewById(R.id.id_tab_me_img);
+        initView();
     }
-    @Override
-    public void onClick(View v) {
-        resetImgs();
-        switch (v.getId()) {
-            case R.id.id_tab_weixin:
-                selectTab(0);//当点击的是微信的Tab就选中微信的Tab
-                break;
-            case R.id.id_tab_contacts:
-                selectTab(1);
-                break;
-            case R.id.id_tab_find:
-                selectTab(2);
-                break;
-            case R.id.id_tab_me:
-                selectTab(3);
-                break;
 
-        }
-    }
-    //进行选中Tab的处理
-    private void selectTab(int i) {
-        //获取FragmentManager对象
-        FragmentManager manager = getSupportFragmentManager();
-        //获取FragmentTransaction对象
-        FragmentTransaction transaction = manager.beginTransaction();
-        //先隐藏所有的Fragment
-        hideFragments(transaction);
-        switch (i) {
-            //当选中点击的是微信的Tab时
-            case 0:
-                //设置微信的ImageButton为绿色
-                BtnWeixinImg.setImageResource(R.drawable.tab_weixin_pressed);
-                //如果微信对应的Fragment没有实例化，则进行实例化，并显示出来
-                if (FragWeixin == null) {
-                    FragWeixin = new WeixinFragment();
-                    transaction.add(R.id.id_content, FragWeixin);
-                } else {
-                    //如果微信对应的Fragment已经实例化，则直接显示出来
-                    transaction.show(FragWeixin);
+    private void initView() {
+        /**
+         * RadioGroup部分
+         */
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        rbChat = (RadioButton) findViewById(R.id.rb_chat);
+        rbContacts = (RadioButton) findViewById(R.id.rb_contacts);
+        rbDiscovery = (RadioButton) findViewById(R.id.rb_discovery);
+        rbMe = (RadioButton) findViewById(R.id.rb_me);
+        //RadioGroup选中状态改变监听
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_chat:
+                        /**
+                         * setCurrentItem第二个参数控制页面切换动画
+                         * true:打开/false:关闭
+                         */
+                        viewPager.setCurrentItem(0, false);
+                        break;
+                    case R.id.rb_contacts:
+                        viewPager.setCurrentItem(1, false);
+                        break;
+                    case R.id.rb_discovery:
+                        viewPager.setCurrentItem(2, false);
+                        break;
+                    case R.id.rb_me:
+                        viewPager.setCurrentItem(3, false);
+                        break;
                 }
-                break;
-            case 1:
-                BtnContactsImg.setImageResource(R.drawable.tab_contacts_pressed);
-                if (FragContacts == null) {
-                    FragContacts = new ContactsFragment();
-                    transaction.add(R.id.id_content, FragContacts);
-                } else {
-                    transaction.show(FragContacts);
+            }
+        });
+
+        /**
+         * ViewPager部分
+         */
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        WeixinFragment weChatFragment = new WeixinFragment();
+        ContactsFragment contactsFragment = new ContactsFragment();
+        FindFragment discoveryFragment = new FindFragment();
+        MeFragment meFragment = new MeFragment();
+        List<Fragment> alFragment = new ArrayList<Fragment>();
+        alFragment.add(weChatFragment);
+        alFragment.add(contactsFragment);
+        alFragment.add(discoveryFragment);
+        alFragment.add(meFragment);
+        //ViewPager设置适配器
+        viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), alFragment));
+        //ViewPager显示第一个Fragment
+        viewPager.setCurrentItem(0);
+        //ViewPager页面切换监听
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        radioGroup.check(R.id.rb_chat);
+                        break;
+                    case 1:
+                        radioGroup.check(R.id.rb_contacts);
+                        break;
+                    case 2:
+                        radioGroup.check(R.id.rb_discovery);
+                        break;
+                    case 3:
+                        radioGroup.check(R.id.rb_me);
+                        break;
                 }
-                break;
-            case 2:
-                BtnFindImg.setImageResource(R.drawable.tab_find_pressed);
-                if (FragFind == null) {
-                    FragFind = new FindFragment();
-                    transaction.add(R.id.id_content, FragFind);
-                } else {
-                    transaction.show(FragFind);
-                }
-                break;
-            case 3:
-                BtnMeImg.setImageResource(R.drawable.tab_me_pressed);
-                if (FragMe == null) {
-                    FragMe = new MeFragment();
-                    transaction.add(R.id.id_content, FragMe);
-                } else {
-                    transaction.show(FragMe);
-                }
-                break;
-        }
-        //不要忘记提交事务
-        transaction.commit();
-    }
-    //将四个的Fragment隐藏
-    private void hideFragments(FragmentTransaction transaction) {
-        if (FragWeixin != null) {
-            transaction.hide(FragWeixin);
-        }
-        if (FragContacts != null) {
-            transaction.hide(FragContacts);
-        }
-        if (FragFind != null) {
-            transaction.hide(FragFind);
-        }
-        if (FragMe != null) {
-            transaction.hide(FragMe);
-        }
-    }
-    //将四个ImageButton置为灰色
-    private void resetImgs() {
-        BtnWeixinImg.setImageResource(R.drawable.tab_weixin_normal);
-        BtnContactsImg.setImageResource(R.drawable.tab_contacts_normal);
-        BtnFindImg.setImageResource(R.drawable.tab_find_normal);
-        BtnMeImg.setImageResource(R.drawable.tab_me_normal);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
     }
 
