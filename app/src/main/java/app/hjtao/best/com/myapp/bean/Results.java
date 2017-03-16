@@ -18,6 +18,9 @@ public class Results {
     private boolean used;
     private String who;
 
+    public Results(){
+    }
+
     public Results(String id, String createdat, String desc, List<String> images, String publishedat, String source, String type, String url, boolean used, String who) {
         Id = id;
         this.createdat = createdat;
