@@ -1,5 +1,4 @@
 package app.hjtao.best.com.myapp;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,21 +13,20 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+import app.hjtao.best.com.myapp.bean.Results;
 
 public class MainActivity extends FragmentActivity {
     private ViewPager viewPager;
-    private TextView mtv;
     private RadioGroup radioGroup;
     private RadioButton rbChat, rbContacts, rbDiscovery, rbMe;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +66,6 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-
         /**
          * ViewPager部分
          */
@@ -108,14 +105,12 @@ public class MainActivity extends FragmentActivity {
                         break;
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
     }
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -131,17 +126,13 @@ public class MainActivity extends FragmentActivity {
                 .setActionStatus(Action.STATUS_TYPE_COMPLETED)
                 .build();
     }
-
     @Override
     protected void onStart() {
         super.onStart();
     }
-
     @Override
     protected void onStop() {
         super.onStop();
     }
 }
-
-
 

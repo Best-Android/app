@@ -1,5 +1,4 @@
 package app.hjtao.best.com.myapp;
-
 import android.app.Application;
 
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -7,11 +6,9 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-
 /**
  * Created by Administrator on 2017/3/16.
  */
-
 public class MyApplication extends Application {
     public static final String TAG = "MyApplication";
     @Override
@@ -23,5 +20,4 @@ public class MyApplication extends Application {
                 .build();
         OkHttpUtils.initClient(okHttpClient);
     }
-
 }
