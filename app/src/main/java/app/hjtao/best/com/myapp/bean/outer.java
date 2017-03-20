@@ -31,11 +31,13 @@ public class Outer {
         Outer outer = null;
         try {
             JSONObject jsonObject = new JSONObject(json);
+            Log.d(TAG,json);
             boolean error = jsonObject.getBoolean("error");
             JSONArray jsonArray = jsonObject.getJSONArray("results");
             List<Results> list = new ArrayList<Results>();
-            List<String> imagesList = new ArrayList<String>();
             for (int i = 0; i < jsonArray.length(); i++) {
+                List<String> imagesList = new ArrayList<String>();
+                imagesList = new ArrayList<String>();
                 JSONObject jsonResults = (JSONObject) jsonArray.get(i);
                 String _id = jsonResults.getString("_id");
                 String createdAt = jsonResults.getString("createdAt");
@@ -45,7 +47,7 @@ public class Outer {
                     JSONArray imagesArray = jsonResults.getJSONArray("images");
                     for (int j = 0; j < imagesArray.length(); j++) {
                         String images = (String) imagesArray.get(j);
-                        //Log.d(TAG, "onResponse: " + images);
+                        Log.d(TAG, "onResponse: " + images);
                         imagesList.add(images);
                     }
                 }
@@ -58,11 +60,11 @@ public class Outer {
                 Results results = new Results(_id, createdAt, desc, imagesList, publishedAt, source, type, url, used, who);
                 list.add(results);
             }
-            // Log.d(TAG, list.toString());
+            Log.d(TAG, list.toString());
             outer = new Outer();
             outer.setError(error);
             outer.setResults(list);
-            Log.d(TAG, "onResponse: " + outer.toString());
+           // Log.d(TAG, "onResponse: " + outer.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -75,7 +77,7 @@ public class Outer {
         return error;
     }
 
-    public List<Results>getResout(){
+    public List<Results>getResults(){
         return results;
     }
 
@@ -89,10 +91,13 @@ public class Outer {
 
     @Override
     public String toString() {
-        return "GankPerson{" +
+        return "Outer{" +
                 "error=" + error +
                 ", results=" + results +
                 '}';
     }
+
+
+
 }
 

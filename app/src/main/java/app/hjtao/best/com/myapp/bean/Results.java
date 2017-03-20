@@ -17,6 +17,7 @@ public class Results {
     private String url;
     private boolean used;
     private String who;
+    private static List<Results> results;
 
     public Results(){
     }
@@ -32,6 +33,10 @@ public class Results {
         this.url = url;
         this.used = used;
         this.who = who;
+    }
+
+    public static List<Results> getResults() {
+        return results;
     }
 
     public void setId(String Id) {
@@ -118,5 +123,9 @@ public class Results {
                 ", used=" + used +
                 ", who='" + who + '\'' +
                 '}';
+    }
+
+    public List<String> getimages() {
+        return images;
     }
 }

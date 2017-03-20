@@ -1,5 +1,7 @@
 package app.hjtao.best.com.myapp.bean;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/3/15.
  */
@@ -28,4 +30,7 @@ public class Images {
                 "images='" + images + '\'' +
                 '}';
     }
+
+
+
 }
