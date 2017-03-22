@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,35 +16,50 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import app.hjtao.best.com.myapp.bean.Images;
 import app.hjtao.best.com.myapp.bean.Outer;
 import app.hjtao.best.com.myapp.bean.Results;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
-import okhttp3.Response;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
  * Created by Administrator on 2017/3/10.
  */
 
 public class WeixinFragment extends Fragment {
-    String url = "http://gank.io/api/data/Android/10/1";
-    @BindView(R.id.recycler_wx)
+    //new_line5
+    final static int ACTION_DOWNLOAD=0;
+    final static int ACTION_PULL_DOWN=1;
+    final static int ACTION_PULL_UP=2;
+    private final static String ROOT_URL="http://gank.io/api/data/Android/10/";
+    //String url = "http://gank.io/api/data/Android/10/1";
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.tv_refresh)
+    TextView tvrefresh;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     ArrayList<Results> mResultList;
     RecyclerViewAdapter mAdapter;
-    LinearLayoutManager mLayoutManager;
+    LinearLayoutManager mlinearLayoutManager;
+    //new_line2
+    int mPageId=1;
+    int mNewState;
     Unbinder unbinder;
 
     public WeixinFragment() {
-        // Required empty public constructor
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,40 +68,112 @@ public class WeixinFragment extends Fragment {
         View view = inflater.inflate(R.layout.image_item, container, false);
         unbinder = ButterKnife.bind(this, view);
         initView(view);
+        setListener();
         return view;
     }
-    private void initView(View view) {
-        mResultList = new ArrayList<>();
-        mAdapter = new RecyclerViewAdapter(view.getContext(),mResultList);
-        recyclerView.setAdapter(mAdapter);
-        mLayoutManager = new LinearLayoutManager(view.getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-
+//new_setListener
+    private void setListener() {
+        setPullDownListener();
+        setPullUpListener();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+    private void setPullDownListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onError(Call call, Exception e, int id) {
-
+            public void onRefresh() {
+                swipeRefreshLayout.setEnabled(true);
+                swipeRefreshLayout.setRefreshing(true);
+                tvrefresh.setVisibility(View.VISIBLE);
+                mPageId = 1;
+                downloadData(ACTION_PULL_DOWN,mPageId);
             }
-
+        });
+    }
+    private void setPullUpListener() {
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            int lastPosition;
             @Override
-            public void onResponse(String response, int id) {
-                Outer outer = Outer.parseJson(response);
-                List<Results> list = outer.getResults();
-                mAdapter.initData(list);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                mNewState = newState;
+                lastPosition = mlinearLayoutManager.findLastVisibleItemPosition();
+                if (lastPosition >= mAdapter.getItemCount() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE
+                        && mAdapter.isMore()) {
+                    mPageId++;
+                    downloadData(ACTION_PULL_UP, mPageId);
+                }
+                if (newState != RecyclerView.SCROLL_STATE_DRAGGING) {
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastPosition=mlinearLayoutManager.findLastVisibleItemPosition();
             }
         });
     }
 
+    private void initView(View view) {
+        mResultList = new ArrayList<>();
+        mAdapter = new RecyclerViewAdapter(view.getContext(),mResultList);
+        recyclerView.setAdapter(mAdapter);
+        mlinearLayoutManager = new LinearLayoutManager(view.getContext());
+        recyclerView.setLayoutManager(mlinearLayoutManager);
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //new
+        downloadData(ACTION_DOWNLOAD,1);
+
+    }
+        private void downloadData(final int actionDown,int pageId){
+            Log.d(TAG, "downloadData: "+pageId);
+            String url=ROOT_URL+pageId;
+            Log.d(TAG,"downloadData:"+url);
+            OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Log.d(TAG,"onError:"+e.getMessage());
+                }
+
+                @Override
+                public void onResponse(String response, int id) {
+                    Outer outer = Outer.parseJson(response);
+                    List<Results> list = outer.getResults();
+                    mAdapter.setMore(list != null && list.size() > 0);
+                    if (!mAdapter.isMore()) {
+                        if (actionDown == ACTION_PULL_UP) {
+                            mAdapter.setFooter("没有更多数据");
+                        }
+                        return;
+                    }
+                    switch (actionDown) {
+                        case ACTION_DOWNLOAD:
+                            mAdapter.initData(list);
+                            mAdapter.setFooter("加载更多数据");
+                            break;
+                        case ACTION_PULL_DOWN:
+                            mAdapter.initData(list);
+                            mAdapter.setFooter("加载更多数据");
+                            swipeRefreshLayout.setRefreshing(false);
+                            tvrefresh.setVisibility(View.GONE);
+                            break;
+                        case ACTION_PULL_UP:
+                            mAdapter.addData(list);
+                            break;
+                    }
+                }
+            });
+        }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
     //ViewHolder类
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -117,12 +206,24 @@ public class WeixinFragment extends Fragment {
 
         Context context;
         ArrayList<Results> GankList;
+        String footerText;
+        boolean isMore;
 
         public RecyclerViewAdapter(Context context, ArrayList<Results> GankList) {
             this.context = context;
             this.GankList = GankList;
         }
+        public boolean isMore() {
+            return isMore;
+        }
 
+        public void setMore(boolean more) {
+        }
+
+        public void setFooter(String footer) {
+            this.footerText = footer;
+            notifyDataSetChanged();
+        }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -178,6 +279,14 @@ public class WeixinFragment extends Fragment {
                 GankList.clear();
             }
             GankList.addAll(list);
+            notifyDataSetChanged();
+        }
+
+
+
+
+        public void addData(List<Results> list) {
+            this.GankList.addAll(list);
             notifyDataSetChanged();
         }
     }
