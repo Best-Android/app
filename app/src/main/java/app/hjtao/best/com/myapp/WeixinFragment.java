@@ -1,7 +1,7 @@
 package app.hjtao.best.com.myapp;
 
 import android.content.Context;
-import android.nfc.Tag;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,14 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +189,7 @@ public class WeixinFragment extends Fragment {
 
     //ViewHolder类
     class MyViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout linearLayoutclick;
         ImageView iv_Img;
         TextView tv_Desc;
         TextView tv_Who;
@@ -194,10 +197,20 @@ public class WeixinFragment extends Fragment {
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            linearLayoutclick = (LinearLayout) itemView.findViewById(R.id.linearlayout);
             iv_Img = (ImageView) itemView.findViewById(R.id.iv_img);
             tv_Desc = (TextView) itemView.findViewById(R.id.tv_desc);
             tv_Who = (TextView) itemView.findViewById(R.id.tv_who);
             tv_Createdat = (TextView) itemView.findViewById(R.id.tv_createdat);
+            linearLayoutclick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                Results results = (Results) view.getTag();
+                String url = results.getUrl();
+                Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), WebViewActivity.class).putExtra("url",url));
+                }
+            });
         }
     }
 
@@ -269,6 +282,7 @@ public class WeixinFragment extends Fragment {
                 Glide.with(context).load(results.getimages().get(0))
                         .placeholder(R.mipmap.ic_launcher).into(((MyViewHolder) holder).iv_Img);
             }
+            myViewHolder.linearLayoutclick.setTag(results);
         }
 
         @Override
