@@ -47,7 +47,7 @@ public class Outer {
                     JSONArray imagesArray = jsonResults.getJSONArray("images");
                     for (int j = 0; j < imagesArray.length(); j++) {
                         String images = (String) imagesArray.get(j);
-                        Log.d(TAG, "onResponse: " + images);
+                        //Log.d(TAG, "onResponse: " + images);
                         imagesList.add(images);
                     }
                 }
@@ -60,7 +60,7 @@ public class Outer {
                 Results results = new Results(_id, createdAt, desc, imagesList, publishedAt, source, type, url, used, who);
                 list.add(results);
             }
-            Log.d(TAG, list.toString());
+            //Log.d(TAG, list.toString());
             outer = new Outer();
             outer.setError(error);
             outer.setResults(list);

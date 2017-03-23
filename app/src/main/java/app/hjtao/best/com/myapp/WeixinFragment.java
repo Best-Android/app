@@ -1,6 +1,7 @@
 package app.hjtao.best.com.myapp;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,13 +32,15 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+
+
 
 /**
  * Created by Administrator on 2017/3/10.
  */
 
 public class WeixinFragment extends Fragment {
+    private final static String TAG = "WeixinFragment";
     //new_line5
     final static int ACTION_DOWNLOAD=0;
     final static int ACTION_PULL_DOWN=1;
@@ -56,7 +59,7 @@ public class WeixinFragment extends Fragment {
     LinearLayoutManager mlinearLayoutManager;
     //new_line2
     int mPageId=1;
-    int mNewState;
+    //int mNewState;
     Unbinder unbinder;
 
     public WeixinFragment() {
@@ -82,8 +85,9 @@ public class WeixinFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setEnabled(true);
-                swipeRefreshLayout.setRefreshing(true);
-                tvrefresh.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+                tvrefresh.setVisibility(View.INVISIBLE);
+               // Log.d(TAG, "setPullDownListener: 000000000000000");
                 mPageId = 1;
                 downloadData(ACTION_PULL_DOWN,mPageId);
             }
@@ -94,11 +98,13 @@ public class WeixinFragment extends Fragment {
             int lastPosition;
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+               // Log.d(TAG, "setPullUpListener: 000000000000000");
                 super.onScrollStateChanged(recyclerView, newState);
-                mNewState = newState;
+                //mNewState = newState;
                 lastPosition = mlinearLayoutManager.findLastVisibleItemPosition();
-                if (lastPosition >= mAdapter.getItemCount() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE
-                        && mAdapter.isMore()) {
+               // Log.d(TAG, "setPullUpListener: 111111111111111");
+                if (lastPosition >= mAdapter.getItemCount() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                   // Log.d(TAG, "onScrollStateChanged: 2222222222222222222222");
                     mPageId++;
                     downloadData(ACTION_PULL_UP, mPageId);
                 }
@@ -113,6 +119,7 @@ public class WeixinFragment extends Fragment {
             }
         });
     }
+
 
     private void initView(View view) {
         mResultList = new ArrayList<>();
@@ -129,7 +136,7 @@ public class WeixinFragment extends Fragment {
 
     }
         private void downloadData(final int actionDown,int pageId){
-            Log.d(TAG, "downloadData: "+pageId);
+            Log.d(TAG, "downloadData: "+actionDown+","+pageId);
             String url=ROOT_URL+pageId;
             Log.d(TAG,"downloadData:"+url);
             OkHttpUtils.get().url(url).build().execute(new StringCallback() {
@@ -143,13 +150,16 @@ public class WeixinFragment extends Fragment {
                 public void onResponse(String response, int id) {
                     Outer outer = Outer.parseJson(response);
                     List<Results> list = outer.getResults();
+
                     mAdapter.setMore(list != null && list.size() > 0);
+                    mAdapter.initData(list);
                     if (!mAdapter.isMore()) {
                         if (actionDown == ACTION_PULL_UP) {
                             mAdapter.setFooter("没有更多数据");
                         }
                         return;
                     }
+
                     switch (actionDown) {
                         case ACTION_DOWNLOAD:
                             mAdapter.initData(list);
@@ -227,6 +237,7 @@ public class WeixinFragment extends Fragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+
             RecyclerView.ViewHolder holder = null;
             LayoutInflater inflater = LayoutInflater.from(context);
             View layout = null;

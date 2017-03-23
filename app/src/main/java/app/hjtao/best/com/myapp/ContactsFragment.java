@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import app.hjtao.best.com.myapp.R;
+
 /**
  * Created by Administrator on 2017/3/10.
  */

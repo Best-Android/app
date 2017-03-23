@@ -6,18 +6,20 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.hjtao.best.com.myapp.bean.Results;
+import app.hjtao.best.com.myapp.ContactsFragment;
+import app.hjtao.best.com.myapp.FindFragment;
+import app.hjtao.best.com.myapp.MeFragment;
+import app.hjtao.best.com.myapp.MyFragmentPagerAdapter;
+import app.hjtao.best.com.myapp.R;
+import app.hjtao.best.com.myapp.WeixinFragment;
 
 public class MainActivity extends FragmentActivity {
     private ViewPager viewPager;
