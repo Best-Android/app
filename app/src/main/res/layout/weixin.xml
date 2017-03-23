@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,7 +10,15 @@
                 android:gravity="center"
     >
 
-
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
     <TextView
     android:id="@+id/tv_desc"
     android:layout_width="wrap_content"
@@ -24,40 +32,41 @@
     android:text="desc"
     android:textColor="#000000"
     />
-<TextView
-    android:id="@+id/tv_who"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/tv_desc"
-    android:layout_marginTop="20dp"
-    android:layout_alignParentLeft="true"
-    android:lines="1"
-    android:text="who"
-    android:textSize="30px"
-    android:textColor="#000000"
-    />
-<TextView
-    android:id="@+id/tv_createdat"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_alignParentRight="true"
-    android:layout_below="@+id/tv_desc"
-    android:lines="1"
-    android:text="createdat"
-    android:textSize="30px"
-    android:textColor="#000000"
-    />
 
-    <ImageView
-        android:id="@+id/iv_img"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_who"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_desc"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:lines="1"
+        android:text="who"
+        android:textSize="30px"
+        android:textColor="#000000"
+        />
+
+    <TextView
+        android:id="@+id/tv_createdat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tv_desc"
+        android:layout_weight="1"
+        android:lines="1"
+        android:text="createdat"
+        android:textSize="30px"
+        android:textColor="#000000"
+        />
+        </LinearLayout>
+
+
+</LinearLayout>
